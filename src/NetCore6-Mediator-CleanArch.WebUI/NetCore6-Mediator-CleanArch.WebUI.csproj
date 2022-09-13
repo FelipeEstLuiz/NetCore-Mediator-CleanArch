@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>NetCore6_Mediator_CleanArch.WebUI</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetCore6-Mediator-CleanArch.Infra.IoC\NetCore6-Mediator-CleanArch.Infra.IoC.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>NetCore6_Mediator_CleanArch.Infra.IoC</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetCore6-Mediator-CleanArch.Application\NetCore6-Mediator-CleanArch.Application.csproj" />
+    <ProjectReference Include="..\NetCore6-Mediator-CleanArch.Domain\NetCore6-Mediator-CleanArch.Domain.csproj" />
+    <ProjectReference Include="..\NetCore6-Mediator-CleanArch.Infra.Data\NetCore6-Mediator-CleanArch.Infra.Data.csproj" />
+  </ItemGroup>
+
+</Project>
