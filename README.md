@@ -1,0 +1,1 @@
+# NetCore6-Mediator-CleanArch
