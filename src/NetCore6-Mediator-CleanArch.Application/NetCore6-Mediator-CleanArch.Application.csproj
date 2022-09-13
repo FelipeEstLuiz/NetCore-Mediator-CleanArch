@@ -1,14 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>NetCore6_Mediator_CleanArch.Application</RootNamespace>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<RootNamespace>NetCore6_Mediator_CleanArch.Application</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\NetCore6-Mediator-CleanArch.Domain\NetCore6-Mediator-CleanArch.Domain.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MediatR" Version="10.0.1" />
+		<PackageReference Include="AutoMapper" Version="11.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\NetCore6-Mediator-CleanArch.Domain\NetCore6-Mediator-CleanArch.Domain.csproj" />
+	</ItemGroup>
 
 </Project>
