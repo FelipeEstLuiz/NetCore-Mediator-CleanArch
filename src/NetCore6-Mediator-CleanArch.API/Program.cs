@@ -1,9 +1,19 @@
+using Microsoft.Extensions.Configuration;
+using NetCore6_Mediator_CleanArch.Infra.IoC;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddInfrastructureApi(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddInfrastructureJwt(
+    secretKey: builder.Configuration["Jwt:SecretKey"],
+    issuer: builder.Configuration["Jwt:Issuer"],
+    audience: builder.Configuration["Jwt:Audience"]
+);
+builder.Services.AddInfrastructureSwagger();
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -18,6 +28,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseStatusCodePages();
+app.UseRouting();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

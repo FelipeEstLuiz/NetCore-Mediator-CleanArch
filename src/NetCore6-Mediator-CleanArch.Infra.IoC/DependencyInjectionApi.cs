@@ -39,7 +39,7 @@ public static class DependencyInjectionApi
         services.AddAutoMapper(typeof(DomainToDtoMappingProfile));
         services.AddAutoMapper(typeof(DtoToCommandMappingProfile));
 
-        var myHandlers = AppDomain.CurrentDomain.Load("NetCore6_Mediator_CleanArch.Application");
+        var myHandlers = AppDomain.CurrentDomain.Load("NetCore6-Mediator-CleanArch.Application");
         services.AddMediatR(myHandlers);
 
         return services;

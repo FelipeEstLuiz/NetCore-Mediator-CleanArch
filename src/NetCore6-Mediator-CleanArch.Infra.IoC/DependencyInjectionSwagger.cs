@@ -9,7 +9,7 @@ public static class DependencyInjectionSwagger
     {
         services.AddSwaggerGen(c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "NetCore6_Mediator_CleanArch.API", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "NetCore6-Mediator-CleanArch.API", Version = "v1" });
 
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
             {

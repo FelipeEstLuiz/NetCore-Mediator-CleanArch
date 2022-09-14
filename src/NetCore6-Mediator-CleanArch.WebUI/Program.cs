@@ -1,9 +1,14 @@
+using NetCore6_Mediator_CleanArch.Domain.Account;
+using NetCore6_Mediator_CleanArch.Infra.Data.Identity;
+using NetCore6_Mediator_CleanArch.Infra.IoC;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
 var app = builder.Build();
+
+builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -15,8 +20,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
+
+SeedUserRoles(app);
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
@@ -25,3 +33,14 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+void SeedUserRoles(IApplicationBuilder app)
+{
+    using(var serviceScope = app.ApplicationServices.CreateScope())
+    {
+        var seed = serviceScope.ServiceProvider.GetService<ISeedUserRoleInitial>();
+
+        seed.SeedUsers();
+        seed.SeedRoles();
+    }
+}
