@@ -1,6 +1,5 @@
-﻿namespace NetCore6_Mediator_CleanArch.Application.Products.Commands
+﻿namespace NetCore6_Mediator_CleanArch.Application.Products.Commands;
+
+public class ProductCreateCommand : ProductCommand
 {
-    public class ProductCreateCommand : ProductCommand
-    {
-    }
 }

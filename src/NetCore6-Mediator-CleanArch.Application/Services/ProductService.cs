@@ -6,63 +6,62 @@ using NetCore6_Mediator_CleanArch.Application.Products.Commands;
 using NetCore6_Mediator_CleanArch.Application.Products.Queries;
 using NetCore6_Mediator_CleanArch.Domain.Entities;
 
-namespace NetCore6_Mediator_CleanArch.Application.Services
+namespace NetCore6_Mediator_CleanArch.Application.Services;
+
+public class ProductService : IProductService
 {
-    public class ProductService : IProductService
+    private readonly IMediator _mediator;
+    private readonly IMapper _mapper;
+
+    public ProductService(IMapper mapper, IMediator mediator)
     {
-        private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
+        _mapper = mapper;
+        _mediator = mediator;
+    }
 
-        public ProductService(IMapper mapper, IMediator mediator)
-        {
-            _mapper = mapper;
-            _mediator = mediator;
-        }
+    public async Task<IEnumerable<ProductDto>> GetProductsAsync()
+    {
+        GetProductsQuery productsQuery = new();
 
-        public async Task<IEnumerable<ProductDto>> GetProductsAsync()
-        {
-            GetProductsQuery productsQuery = new();
+        if (productsQuery == null)
+            throw new Exception("Entity could not be load.");
 
-            if (productsQuery == null)
-                throw new Exception("Entity could not be load.");
+        IEnumerable<Product> result = await _mediator.Send(productsQuery);
 
-            IEnumerable<Product> result = await _mediator.Send(productsQuery);
+        return _mapper.Map<IEnumerable<ProductDto>>(result);
+    }
 
-            return _mapper.Map<IEnumerable<ProductDto>>(result);
-        }
+    public async Task<ProductDto> GetProductByIdAsync(int? id)
+    {
+        GetProductByIdQuery productByIdQuery = new(id ?? throw new Exception("Product is required."));
 
-        public async Task<ProductDto> GetProductByIdAsync(int? id)
-        {
-            GetProductByIdQuery productByIdQuery = new(id.Value);
+        if (productByIdQuery == null)
+            throw new Exception("Entity could not be load.");
 
-            if (productByIdQuery == null)
-                throw new Exception("Entity could not be load.");
+        Product result = await _mediator.Send(productByIdQuery);
 
-            Product result = await _mediator.Send(productByIdQuery);
+        return _mapper.Map<ProductDto>(result);
+    }
 
-            return _mapper.Map<ProductDto>(result);
-        }
+    public async Task CreateProductyAsync(ProductDto product)
+    {
+        ProductCreateCommand productCreateCommand = _mapper.Map<ProductCreateCommand>(product);
+        await _mediator.Send(productCreateCommand);
+    }
 
-        public async Task CreateProductyAsync(ProductDto product)
-        {
-            ProductCreateCommand productCreateCommand = _mapper.Map<ProductCreateCommand>(product);
-            await _mediator.Send(productCreateCommand);
-        }
+    public async Task UpdateProductyAsync(ProductDto product)
+    {
+        ProductUpdateCommand productUpdateCommand = _mapper.Map<ProductUpdateCommand>(product);
+        await _mediator.Send(productUpdateCommand);
+    }
 
-        public async Task UpdateProductyAsync(ProductDto product)
-        {
-            ProductUpdateCommand productUpdateCommand = _mapper.Map<ProductUpdateCommand>(product);
-            await _mediator.Send(productUpdateCommand);
-        }
+    public async Task DeleteProductyAsync(int? id)
+    {
+        ProductRemoveCommand productRemoveCommand = new(id ?? throw new Exception("Product is required."));
 
-        public async Task DeleteProductyAsync(int? id)
-        {
-            ProductRemoveCommand productRemoveCommand = new(id.Value);
+        if (productRemoveCommand == null)
+            throw new Exception("Entity could not be load.");
 
-            if (productRemoveCommand == null)
-                throw new Exception("Entity could not be load.");
-
-            await _mediator.Send(productRemoveCommand);
-        }
+        await _mediator.Send(productRemoveCommand);
     }
 }

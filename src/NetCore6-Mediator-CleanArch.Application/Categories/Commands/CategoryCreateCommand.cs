@@ -1,6 +1,5 @@
-﻿namespace NetCore6_Mediator_CleanArch.Application.Categories.Commands
+﻿namespace NetCore6_Mediator_CleanArch.Application.Categories.Commands;
+
+public class CategoryCreateCommand : CategoryCommand
 {
-    public class CategoryCreateCommand : CategoryCommand
-    {
-    }
 }

@@ -1,8 +1,7 @@
-﻿namespace NetCore6_Mediator_CleanArch.Domain.Entities
+﻿namespace NetCore6_Mediator_CleanArch.Domain.Entities;
+
+public abstract class Entity
 {
-    public abstract class Entity
-    {
-        public int Id { get; protected set; }
-        public string Name { get; protected set; }
-    }
+    public int Id { get; protected set; }
+    public string? Name { get; protected set; }
 }

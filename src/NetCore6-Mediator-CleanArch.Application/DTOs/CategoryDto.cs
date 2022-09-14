@@ -1,14 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NetCore6_Mediator_CleanArch.Application.DTOs
-{
-    public class CategoryDto
-    {
-        public int Id { get; set; }
+namespace NetCore6_Mediator_CleanArch.Application.DTOs;
 
-        [Required(ErrorMessage = "The Name is Required")]
-        [MinLength(3)]
-        [MaxLength(100)]
-        public string Name { get; set; }
-    }
+public class CategoryDto
+{
+    public int Id { get; set; }
+
+    [Required(ErrorMessage = "The Name is Required")]
+    [MinLength(3)]
+    [MaxLength(100)]
+    public string? Name { get; set; }
 }
