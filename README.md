@@ -13,6 +13,6 @@
 - Testes de Unidade com xUnit
 - Handlers
 
-> Solução criada em .Net Core 6 com mesma estrutura da solução [NetCore-Mediator]
+> Solução criada em .Net Core 9 com mesma estrutura da solução [NetCore-Mediator]
 
  [NetCore-Mediator]: <https://github.com/FelipeEstLuiz/NetCore-Mediator>
