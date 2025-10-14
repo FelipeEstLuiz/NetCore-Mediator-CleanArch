@@ -3,20 +3,11 @@ using NetCore_Mediator_CleanArch.Domain.Account;
 
 namespace NetCore_Mediator_CleanArch.Infra.Data.Identity;
 
-public class AuthenticateService : IAuthenticate
+public class AuthenticateService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager) : IAuthenticate
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
-
-    public AuthenticateService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
-    {
-        _userManager = userManager;
-        _signInManager = signInManager;
-    }
-
     public async Task<bool> Authenticate(string email, string password)
     {
-        SignInResult result = await _signInManager.PasswordSignInAsync(
+        SignInResult result = await signInManager.PasswordSignInAsync(
             email,
             password,
             isPersistent: false,
@@ -26,10 +17,7 @@ public class AuthenticateService : IAuthenticate
         return result.Succeeded;
     }
 
-    public async Task Logout()
-    {
-        await _signInManager.SignOutAsync();
-    }
+    public async Task Logout() => await signInManager.SignOutAsync();
 
     public async Task<bool> RegisterUser(string email, string password)
     {
@@ -39,10 +27,10 @@ public class AuthenticateService : IAuthenticate
             Email = email
         };
 
-        IdentityResult result = await _userManager.CreateAsync(applicationUser, password);
+        IdentityResult result = await userManager.CreateAsync(applicationUser, password);
 
         if (result.Succeeded)
-            await _signInManager.SignInAsync(applicationUser, isPersistent: false);
+            await signInManager.SignInAsync(applicationUser, isPersistent: false);
 
         return result.Succeeded;
     }
