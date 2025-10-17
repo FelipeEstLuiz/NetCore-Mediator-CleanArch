@@ -5,17 +5,10 @@ using NetCore_Mediator_CleanArch.Domain.Interfaces;
 
 namespace NetCore_Mediator_CleanArch.Application.Categories.Handlers;
 
-public class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, IEnumerable<Category>>
+public class GetCategoriesQueryHandler(ICategoryRepository categoryRepository) : IRequestHandler<GetCategoriesQuery, IEnumerable<Category>>
 {
-    private readonly ICategoryRepository _categoryRepository;
+    private readonly ICategoryRepository _categoryRepository = categoryRepository ?? throw new ArgumentException(nameof(categoryRepository));
 
-    public GetCategoriesQueryHandler(ICategoryRepository categoryRepository)
-    {
-        _categoryRepository = categoryRepository ?? throw new ArgumentException(nameof(categoryRepository));
-    }
-
-    public async Task<IEnumerable<Category>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
-    {
-        return await _categoryRepository.GetCategoriesAsync();
-    }
+    public async Task<IEnumerable<Category>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken) 
+        => await _categoryRepository.GetCategoriesAsync();
 }

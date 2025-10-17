@@ -5,21 +5,14 @@ using NetCore_Mediator_CleanArch.Domain.Interfaces;
 
 namespace NetCore_Mediator_CleanArch.Application.Categories.Handlers;
 
-public class CategoryUpdateCommandHandler : IRequestHandler<CategoryUpdateCommand, Category>
+public class CategoryUpdateCommandHandler(ICategoryRepository categoryRepository) : IRequestHandler<CategoryUpdateCommand, Category>
 {
-    private readonly ICategoryRepository _categoryRepository;
-
-    public CategoryUpdateCommandHandler(ICategoryRepository categoryRepository)
-    {
-        _categoryRepository = categoryRepository ?? throw new ArgumentException(nameof(categoryRepository));
-    }
+    private readonly ICategoryRepository _categoryRepository = categoryRepository ?? throw new ArgumentException(nameof(categoryRepository));
 
     public async Task<Category> Handle(CategoryUpdateCommand request, CancellationToken cancellationToken)
     {
-        Category category = await _categoryRepository.GetCategoryByIdAsync(request.Id);
-
-        if (category == null)
-            throw new ApplicationException("Entity could not be found");
+        Category category = await _categoryRepository.GetCategoryByIdAsync(request.Id)
+            ?? throw new InvalidOperationException("Entity could not be found");
 
         category.Update(request.Name);
 

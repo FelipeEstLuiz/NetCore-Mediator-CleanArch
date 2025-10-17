@@ -5,17 +5,10 @@ using NetCore_Mediator_CleanArch.Domain.Interfaces;
 
 namespace NetCore_Mediator_CleanArch.Application.Products.Handlers;
 
-public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Product>
+public class GetProductByIdQueryHandler(IProductRepository productRepository) : IRequestHandler<GetProductByIdQuery, Product?>
 {
-    private readonly IProductRepository _productRepository;
+    private readonly IProductRepository _productRepository = productRepository ?? throw new ArgumentException(nameof(productRepository));
 
-    public GetProductByIdQueryHandler(IProductRepository productRepository)
-    {
-        _productRepository = productRepository ?? throw new ArgumentException(nameof(productRepository));
-    }
-
-    public async Task<Product> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
-    {
-        return await _productRepository.GetProductById(request.Id);
-    }
+    public async Task<Product?> Handle(GetProductByIdQuery request, CancellationToken cancellationToken) 
+        => await _productRepository.GetProductById(request.Id);
 }

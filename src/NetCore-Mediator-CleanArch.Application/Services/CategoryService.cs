@@ -25,7 +25,8 @@ public class CategoryService(IMediator mediator) : ICategoryService
     {
         GetCategoryByIdQuery getCategoryByIdQuery = new(id ?? throw new InvalidOperationException("Category is required."));
 
-        Category category = await mediator.Send(getCategoryByIdQuery);
+        Category category = await mediator.Send(getCategoryByIdQuery) ?? throw new InvalidOperationException("Category not found.");
+
         return new CategoryDto()
         {
             Name = category.Name,

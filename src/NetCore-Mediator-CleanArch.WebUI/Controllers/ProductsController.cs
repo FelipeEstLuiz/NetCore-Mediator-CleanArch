@@ -6,27 +6,16 @@ using NetCore_Mediator_CleanArch.Application.Interfaces;
 
 namespace NetCore_Mediator_CleanArch.WebUI.Controllers;
 
-public class ProductsController : Controller
+public class ProductsController(
+    IProductService productAppService,
+    ICategoryService categoryService,
+    IWebHostEnvironment environment
+) : Controller
 {
-    private readonly IProductService _productService;
-    private readonly ICategoryService _categoryService;
-    private readonly IWebHostEnvironment _environment;
-
-    public ProductsController(
-        IProductService productAppService,
-        ICategoryService categoryService,
-        IWebHostEnvironment environment
-    )
-    {
-        _productService = productAppService;
-        _categoryService = categoryService;
-        _environment = environment;
-    }
-
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        IEnumerable<ProductDto> products = await _productService.GetProductsAsync();
+        IEnumerable<ProductDto> products = await productAppService.GetProductsAsync();
 
         return View(products);
     }
@@ -34,7 +23,7 @@ public class ProductsController : Controller
     [HttpGet()]
     public async Task<IActionResult> Create()
     {
-        ViewBag.CategoryId = new SelectList(await _categoryService.GetCategoriesAsync(), "Id", "Name");
+        ViewBag.CategoryId = new SelectList(await categoryService.GetCategoriesAsync(), "Id", "Name");
 
         return View();
     }
@@ -44,7 +33,7 @@ public class ProductsController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _productService.CreateProductyAsync(request);
+            await productAppService.CreateProductyAsync(request);
             return RedirectToAction(nameof(Index));
         }
 
@@ -56,11 +45,11 @@ public class ProductsController : Controller
     {
         if (id == null) return NotFound();
 
-        ProductDto productDto = await _productService.GetProductByIdAsync(id);
+        ProductDto productDto = await productAppService.GetProductByIdAsync(id);
 
         if (productDto == null) return NotFound();
 
-        IEnumerable<CategoryDto> categories = await _categoryService.GetCategoriesAsync();
+        IEnumerable<CategoryDto> categories = await categoryService.GetCategoriesAsync();
 
         ViewBag.CategoryId = new SelectList(categories, "Id", "Name", productDto.CategoryId);
 
@@ -72,7 +61,7 @@ public class ProductsController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _productService.UpdateProductyAsync(request);
+            await productAppService.UpdateProductyAsync(request);
             return RedirectToAction(nameof(Index));
         }
         return View(request);
@@ -84,7 +73,7 @@ public class ProductsController : Controller
     {
         if (id == null) return NotFound();
 
-        ProductDto productDto = await _productService.GetProductByIdAsync(id);
+        ProductDto productDto = await productAppService.GetProductByIdAsync(id);
 
         if (productDto == null) return NotFound();
 
@@ -94,7 +83,7 @@ public class ProductsController : Controller
     [HttpPost(), ActionName("Delete")]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        await _productService.DeleteProductyAsync(id);
+        await productAppService.DeleteProductyAsync(id);
         return RedirectToAction("Index");
     }
 
@@ -102,11 +91,11 @@ public class ProductsController : Controller
     {
         if (id == null) return NotFound();
 
-        ProductDto productDto = await _productService.GetProductByIdAsync(id);
+        ProductDto productDto = await productAppService.GetProductByIdAsync(id);
 
         if (productDto == null) return NotFound();
 
-        string wwwroot = _environment.WebRootPath;
+        string wwwroot = environment.WebRootPath;
         string image = Path.Combine(wwwroot, "images\\" + productDto.Image);
         bool exists = System.IO.File.Exists(image);
         ViewBag.ImageExist = exists;

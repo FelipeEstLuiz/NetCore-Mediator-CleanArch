@@ -6,19 +6,12 @@ using NetCore_Mediator_CleanArch.Application.Interfaces;
 namespace NetCore_Mediator_CleanArch.WebUI.Controllers;
 
 [Authorize]
-public class CategoriesController : Controller
+public class CategoriesController(ICategoryService categoryService) : Controller
 {
-    private readonly ICategoryService _categoryService;
-
-    public CategoriesController(ICategoryService categoryService)
-    {
-        _categoryService = categoryService;
-    }
-
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        IEnumerable<CategoryDto> categories = await _categoryService.GetCategoriesAsync();
+        IEnumerable<CategoryDto> categories = await categoryService.GetCategoriesAsync();
 
         return View(categories);
     }
@@ -34,7 +27,7 @@ public class CategoriesController : Controller
     {
         if (ModelState.IsValid)
         {
-            await _categoryService.CreateCategoryAsync(category);
+            await categoryService.CreateCategoryAsync(category);
             return RedirectToAction(nameof(Index));
         }
 
@@ -46,7 +39,7 @@ public class CategoriesController : Controller
     {
         if (id == null) return NotFound();
 
-        CategoryDto categoryDto = await _categoryService.GetCategoryByIdAsync(id);
+        CategoryDto categoryDto = await categoryService.GetCategoryByIdAsync(id);
 
         if (categoryDto == null) return NotFound();
 
@@ -60,7 +53,7 @@ public class CategoriesController : Controller
         {
             try
             {
-                await _categoryService.UpdateCategoryAsync(categoryDto);
+                await categoryService.UpdateCategoryAsync(categoryDto);
             }
             catch (Exception)
             {
@@ -76,7 +69,7 @@ public class CategoriesController : Controller
     {
         if (id == null) return NotFound();
 
-        CategoryDto categoryDto = await _categoryService.GetCategoryByIdAsync(id);
+        CategoryDto categoryDto = await categoryService.GetCategoryByIdAsync(id);
 
         if (categoryDto == null) return NotFound();
 
@@ -86,7 +79,7 @@ public class CategoriesController : Controller
     [HttpPost(), ActionName("Delete")]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        await _categoryService.DeleteCategoryAsync(id);
+        await categoryService.DeleteCategoryAsync(id);
         return RedirectToAction(nameof(Index));
     }
 
@@ -94,7 +87,7 @@ public class CategoriesController : Controller
     {
         if (id == null) return NotFound();
 
-        CategoryDto categoryDto = await _categoryService.GetCategoryByIdAsync(id);
+        CategoryDto categoryDto = await categoryService.GetCategoryByIdAsync(id);
 
         if (categoryDto == null) return NotFound();
 

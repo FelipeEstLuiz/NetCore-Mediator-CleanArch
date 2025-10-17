@@ -3,12 +3,7 @@ using MediatR;
 
 namespace NetCore_Mediator_CleanArch.Application.Products.Commands;
 
-public class ProductRemoveCommand : IRequest<Product>
+public class ProductRemoveCommand(int id) : IRequest<Product>
 {
-    public int Id { get; private set; }
-
-    public ProductRemoveCommand(int id)
-    {
-        Id = id;
-    }
+    public int Id { get; private set; } = id;
 }

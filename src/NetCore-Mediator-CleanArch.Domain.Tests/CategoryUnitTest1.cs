@@ -9,14 +9,14 @@ public class CategoryUnitTest1
     public void CreateCategory_WithValidParameters_ResultObjectValidState()
     {
         Action action = () => new Category(1, "Category Name");
-        action.Should().NotThrow<Validation.DomainExceptionValidation>();
+        action.Should().NotThrow<Validation.DomainValidationException>();
     }
 
     [Fact]
     public void CreateCategory_NegativeIdValue_DomainExceptionValidation()
     {
         Action action = () => new Category(-1, "Category Name");
-        action.Should().Throw<Validation.DomainExceptionValidation>().WithMessage("Invalid Id value");
+        action.Should().Throw<Validation.DomainValidationException>().WithMessage("Invalid Id value");
     }
 
     [Fact]
@@ -25,7 +25,7 @@ public class CategoryUnitTest1
         Action action = () => new Category(1, "Ca");
         action
             .Should()
-            .Throw<Validation.DomainExceptionValidation>()
+            .Throw<Validation.DomainValidationException>()
             .WithMessage("Invalid name, too short, minimum 3 characters");
     }
 
@@ -35,7 +35,7 @@ public class CategoryUnitTest1
         Action action = () => new Category(1, "");
         action
             .Should()
-            .Throw<Validation.DomainExceptionValidation>()
+            .Throw<Validation.DomainValidationException>()
             .WithMessage("Invalid name. Name is required");
     }
 
@@ -45,7 +45,7 @@ public class CategoryUnitTest1
         Action action = () => new Category(1, name: string.Empty);
         action
             .Should()
-            .Throw<Validation.DomainExceptionValidation>()
+            .Throw<Validation.DomainValidationException>()
             .WithMessage("Invalid name. Name is required");
     }
 }

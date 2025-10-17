@@ -32,7 +32,7 @@ public class ProductService(IMediator mediator) : IProductService
     {
         GetProductByIdQuery productByIdQuery = new(id ?? throw new InvalidOperationException("Product is required."));
 
-        Product result = await mediator.Send(productByIdQuery);
+        Product result = await mediator.Send(productByIdQuery) ?? throw new InvalidOperationException("Product not found.");
 
         return new ProductDto()
         {

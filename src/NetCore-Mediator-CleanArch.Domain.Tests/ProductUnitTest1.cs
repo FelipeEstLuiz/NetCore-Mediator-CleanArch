@@ -11,7 +11,7 @@ public class ProductUnitTest1
         Action action = () => new Product(1, "Product Name", "Product Description", 9.99m,
             99, "product image");
 
-        action.Should().NotThrow<Validation.DomainExceptionValidation>();
+        action.Should().NotThrow<Validation.DomainValidationException>();
     }
 
     [Fact]
@@ -20,7 +20,7 @@ public class ProductUnitTest1
         Action action = () => new Product(-1, "Product Name", "Product Description", 9.99m,
             99, "product image");
 
-        action.Should().Throw<Validation.DomainExceptionValidation>().WithMessage("Invalid Id value");
+        action.Should().Throw<Validation.DomainValidationException>().WithMessage("Invalid Id value");
     }
 
     [Fact]
@@ -31,7 +31,7 @@ public class ProductUnitTest1
 
         action
             .Should()
-            .Throw<Validation.DomainExceptionValidation>()
+            .Throw<Validation.DomainValidationException>()
             .WithMessage("Invalid name, too short, minimum 3 characters");
     }
 
@@ -42,7 +42,7 @@ public class ProductUnitTest1
             99, "product image toooooooooooooooooooooooooooooooooooooooooooo loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooogggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
 
         action.Should()
-            .Throw<Validation.DomainExceptionValidation>()
+            .Throw<Validation.DomainValidationException>()
             .WithMessage("Invalid image, too long, maximum 250 characters");
     }
 
@@ -51,7 +51,7 @@ public class ProductUnitTest1
     {
         Action action = () => new Product(1, "Product Name", "Product Description", 9.99m, 99, null);
 
-        action.Should().NotThrow<Validation.DomainExceptionValidation>();
+        action.Should().NotThrow<Validation.DomainValidationException>();
     }
 
     [Fact]
@@ -67,7 +67,7 @@ public class ProductUnitTest1
     {
         Action action = () => new Product(1, "Product Name", "Product Description", 9.99m, 99, "");
 
-        action.Should().NotThrow<Validation.DomainExceptionValidation>();
+        action.Should().NotThrow<Validation.DomainValidationException>();
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public class ProductUnitTest1
         Action action = () => new Product(1, "Product Name", "Product Description", -9.99m,
             99, "");
 
-        action.Should().Throw<Validation.DomainExceptionValidation>().WithMessage("Invalid price value");
+        action.Should().Throw<Validation.DomainValidationException>().WithMessage("Invalid price value");
     }
 
     [Theory]
@@ -86,6 +86,6 @@ public class ProductUnitTest1
         Action action = () => new Product(1, "Product Name", "Product Description", 9.99m, value,
             "product image");
 
-        action.Should().Throw<Validation.DomainExceptionValidation>().WithMessage("Invalid stock value");
+        action.Should().Throw<Validation.DomainValidationException>().WithMessage("Invalid stock value");
     }
 }

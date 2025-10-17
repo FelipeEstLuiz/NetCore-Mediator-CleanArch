@@ -4,15 +4,8 @@ using NetCore_Mediator_CleanArch.WebUI.ViewModels;
 
 namespace NetCore_Mediator_CleanArch.WebUI.Controllers;
 
-public class AccountController : Controller
+public class AccountController(IAuthenticate authenticate) : Controller
 {
-    private readonly IAuthenticate _authenticate;
-
-    public AccountController(IAuthenticate authenticate)
-    {
-        _authenticate = authenticate;
-    }
-
     [HttpGet]
     public IActionResult Login(string returnUrl)
     {
@@ -25,7 +18,7 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel model)
     {
-        bool result = await _authenticate.Authenticate(model.Email, model.Password);
+        bool result = await authenticate.Authenticate(model.Email, model.Password);
 
         if (result)
         {
@@ -48,7 +41,7 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
-        bool result = await _authenticate.RegisterUser(model.Email, model.Password);
+        bool result = await authenticate.RegisterUser(model.Email, model.Password);
 
         if (result)
             return Redirect("/");
@@ -59,7 +52,7 @@ public class AccountController : Controller
 
     public async Task<IActionResult> Logout()
     {
-        await _authenticate.Logout();
+        await authenticate.Logout();
         return Redirect("/Account/Login");
     }
 }
